@@ -22,3 +22,5 @@ Here's how it works:
     - If you black out, you won't swap.
 
 This hack is based on [pret's decompilation of Pokémon Yellow](https://github.com/pret/pokeyellow).
+
+See also [Pokémon Red and Blue: Swap Battle Edition](https://github.com/rbong/pokered/tree/swap).
