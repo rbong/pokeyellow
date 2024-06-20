@@ -1,4 +1,13 @@
 InitBattle::
+	xor a
+	ld [wIsSwapBattle], a
+	jr _InitSwapBattleCommon
+
+InitSwapBattle:
+	ld a, 1
+	ld [wIsSwapBattle], a
+
+_InitSwapBattleCommon:
 	ld a, [wCurOpponent]
 	and a
 	jr z, DetermineWildOpponent
@@ -36,6 +45,14 @@ InitBattleCommon:
 	ld [wTrainerClass], a
 	call GetTrainerInformation
 	callfar ReadTrainer
+	ld a, [wIsSwapBattle]
+	and a
+	jr nz, .swapTeams
+	callfar SavePartyToSwap
+	jr .transition
+.swapTeams
+	callfar SwapTeams
+.transition
 	callfar DoBattleTransitionAndInitBattleVariables
 	call _LoadTrainerPic
 	xor a
@@ -139,6 +156,29 @@ _InitBattleCommon:
 	call z, Bankswitch ; draw enemy HUD and HP bar if it's a wild battle
 	callfar StartBattle
 	callfar EndOfBattle
+	ld a, [wIsInBattle]
+	dec a
+	jr z, .return ; don't swap teams in wild battles
+	ld a, [wIsSwapBattle]
+	and a
+	jr nz, .return ; don't swap teams twice
+	callfar AnyPartyAlive
+	ld a, d
+	and a
+	jr z, .return ; don't swap teams if player lost
+	ld a, [wBattleType]
+	cp BATTLE_TYPE_OLD_MAN
+	jr z, .return ; don't swap teams for old man battle
+	cp BATTLE_TYPE_PIKACHU
+	jr z, .return ; don't swap teams for the special Pikachu battle
+.swapBattle
+	call InitSwapBattle
+	callfar RestoreSwappedTeam
+.return
+	xor a
+	ld [wIsInBattle], a
+	ld [wBattleType], a
+	ld [wCurOpponent], a
 	pop af
 	ld [wLetterPrintingDelayFlags], a
 	pop af

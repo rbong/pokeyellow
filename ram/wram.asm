@@ -250,7 +250,18 @@ wYellowIntroAnimatedObjectStructPointer:: db
 wSurfingMinigameDataEnd::
 ENDU
 
+UNION
 	ds 80
+NEXTU
+wIsSwapBattle:: db
+wSwapBytes:: db
+
+wSwapMonInfo::
+FOR n, 1, PARTY_LENGTH + 1
+wSwapMon{d:n}Info:: swap_info_struct wSwapMon{d:n}
+wSwapMon{d:n}InfoEnd::
+ENDR
+ENDU
 
 
 SECTION "Overworld Map", WRAM0
@@ -2295,10 +2306,19 @@ wSeafoamIslandsB3FCurScript:: db
 wRoute23CurScript:: db
 wSeafoamIslandsB4FCurScript:: db
 wRoute18Gate1FCurScript:: db
+
+UNION
 	ds 78
 wGameProgressFlagsEnd::
 
 	ds 56
+NEXTU
+wSwapMonStats::
+FOR n, 1, PARTY_LENGTH + 1
+wSwapMon{d:n}Stats:: swap_stats_struct wSwapMon{d:n}
+wSwapMon{d:n}StatsEnd::
+ENDR
+ENDU
 
 wObtainedHiddenItemsFlags:: flag_array MAX_HIDDEN_ITEMS
 
@@ -2486,6 +2506,8 @@ wLinkEnemyTrainerName:: ds NAME_LENGTH
 wSerialEnemyDataBlock:: ; ds $1a8
 
 	ds 9
+
+wEnemyPartyDataStart::
 
 wEnemyPartyCount:: ds 1
 wEnemyPartySpecies:: ds PARTY_LENGTH + 1

@@ -10,6 +10,13 @@ _TrainerWantsToFightText::
 	line "to fight!"
 	prompt
 
+_SwapBattleText::
+	text "Swapped #MON"
+	line "with @"
+	text_ram wTrainerName
+	text "!"
+	prompt
+
 _UnveiledGhostText::
 	text "SILPH SCOPE"
 	line "unveiled the"

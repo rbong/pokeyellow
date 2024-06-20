@@ -31,6 +31,14 @@ PrintBeginningBattleText:
 	jr .wildBattle
 .trainerBattle
 	call .playSFX
+	ld a, [wIsSwapBattle]
+	and a
+	jr z, .notSwapBattle
+	ld c, 20
+	call DelayFrames
+	ld hl, SwapBattleText
+	jr .wildBattle
+.notSwapBattle
 	ld c, 20
 	call DelayFrames
 	ld hl, TrainerWantsToFightText
@@ -96,6 +104,10 @@ HookedMonAttackedText:
 
 EnemyAppearedText:
 	text_far _EnemyAppearedText
+	text_end
+
+SwapBattleText:
+	text_far _SwapBattleText
 	text_end
 
 TrainerWantsToFightText:

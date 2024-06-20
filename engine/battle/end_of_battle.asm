@@ -42,6 +42,9 @@ EndOfBattle:
 	ld hl, PickUpPayDayMoneyText
 	call PrintText
 .evolution
+	ld a, [wIsSwapBattle]
+	and a
+	jr nz, .resetVariables ; don't evolve if Pokemon are swapped
 	xor a
 	ld [wForceEvolution], a
 	predef EvolutionAfterBattle
@@ -51,10 +54,10 @@ EndOfBattle:
 	xor a
 	ld [wLowHealthAlarm], a ;disable low health alarm
 	ld [wChannelSoundIDs + CHAN5], a
-	ld [wIsInBattle], a
-	ld [wBattleType], a
+	; ld [wIsInBattle], a
+	; ld [wBattleType], a
 	ld [wMoveMissed], a
-	ld [wCurOpponent], a
+	; ld [wCurOpponent], a
 	ld [wForcePlayerToChooseMon], a
 	ld [wNumRunAttempts], a
 	ld [wEscapedFromBattle], a

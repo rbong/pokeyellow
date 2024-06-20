@@ -142,4 +142,29 @@ ReadTrainer:
 	inc de
 	dec b
 	jr nz, .LastLoop ; repeat wCurEnemyLVL times
+; preload names
+	push de
+	push hl
+	ld c, PARTY_LENGTH
+	ld hl, wEnemyMon1Species
+	ld de, wEnemyMon1Nick
+.NickLoop
+	push bc
+	ld a, [hl]
+	ld [wd11e], a
+	push de
+	call GetMonName
+	pop de
+	push hl
+	ld hl, wcd6d
+	ld bc, NAME_LENGTH
+	call CopyData
+	pop hl
+	ld bc, wPartyMon2 - wPartyMon1
+	add hl, bc
+	pop bc
+	dec c
+	jr nz, .NickLoop
+	pop hl
+	pop de
 	ret
